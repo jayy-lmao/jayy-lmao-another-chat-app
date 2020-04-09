@@ -1,0 +1,129 @@
+{
+  "version": 2,
+  "tables": [
+    {
+      "table": {
+        "schema": "public",
+        "name": "chat"
+      },
+      "object_relationships": [
+        {
+          "name": "owner",
+          "using": {
+            "foreign_key_constraint_on": "owner_id"
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "members",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "chat_id",
+              "table": {
+                "schema": "public",
+                "name": "member"
+              }
+            }
+          }
+        },
+        {
+          "name": "messages",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "chat_id",
+              "table": {
+                "schema": "public",
+                "name": "message"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "member"
+      },
+      "object_relationships": [
+        {
+          "name": "chat",
+          "using": {
+            "foreign_key_constraint_on": "chat_id"
+          }
+        },
+        {
+          "name": "user",
+          "using": {
+            "foreign_key_constraint_on": "user_id"
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "message"
+      },
+      "object_relationships": [
+        {
+          "name": "chat",
+          "using": {
+            "foreign_key_constraint_on": "chat_id"
+          }
+        },
+        {
+          "name": "sender",
+          "using": {
+            "foreign_key_constraint_on": "sender_id"
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "user"
+      },
+      "array_relationships": [
+        {
+          "name": "member_of",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "user_id",
+              "table": {
+                "schema": "public",
+                "name": "member"
+              }
+            }
+          }
+        },
+        {
+          "name": "owner",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "owner_id",
+              "table": {
+                "schema": "public",
+                "name": "chat"
+              }
+            }
+          }
+        },
+        {
+          "name": "sender",
+          "using": {
+            "foreign_key_constraint_on": {
+              "column": "sender_id",
+              "table": {
+                "schema": "public",
+                "name": "message"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
