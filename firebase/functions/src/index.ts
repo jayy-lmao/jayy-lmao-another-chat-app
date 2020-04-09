@@ -17,7 +17,7 @@ if (!config.envs.encryption_key) {
   throw Error("Need an envs.encryption_key");
 }
 
-main.use(`/v1`, app);
+main.use(`/api/v1`, app);
 main.use(bodyParser.json());
 main.use(bodyParser.urlencoded({ extended: false }));
 main.use(passport.initialize());
@@ -88,4 +88,4 @@ function handleResponse(
 ) {
   res.status(code).json(statusMsg);
 }
-export const webApi = functions.https.onRequest(main);
+export const authServer = functions.https.onRequest(main);
