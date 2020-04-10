@@ -34,8 +34,8 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
     Displayname: signupDetails.Displayname,
   }
 
-  exists := db.NewRecord(user)
-  if exists {
+  unique := db.NewRecord(user)
+  if !unique {
     w.WriteHeader(http.StatusBadRequest)
     io.WriteString(w, `{"error" : "user_exists"}`)
     return
