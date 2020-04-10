@@ -28,7 +28,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
 
   json.Unmarshal(reqBody, &signupDetails)
 
-  user := User{
+  user := UserInput{
     Username: signupDetails.Username,
     Password: signupDetails.Password,
     Displayname: signupDetails.Displayname,
@@ -42,12 +42,16 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
   }
   db.Create(&user)
 
-  log.Printf("Created user %d\n", user.Id);
+  var createdUser User;
+
+  db.First(&createdUser, "username = ?", user.Username)
+
+  log.Printf("Created user %d\n", createdUser.Id);
 
 
   hasuraClaims := &HasuraClaims{
     Role: "user",
-    UserId: user.Id,
+    UserId: createdUser.Id,
     DefaultRole: "user",
     Roles: `["mine","user"]`,
   }

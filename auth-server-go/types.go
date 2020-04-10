@@ -20,10 +20,17 @@ type SignupDetails struct {
   Displayname string `json:"displayname"`
 }
 
+type UserInput struct {
+  gorm.Model
+  Username string `gorm:"username"`
+  Password string `gorm:"password"`
+  Displayname string `gorm:"displayname"`
+}
+
 type User struct {
   gorm.Model
   Username string `gorm:"username"`
   Password string `gorm:"password"`
   Displayname string `gorm:"displayname"`
-  Id int `gorm:"id; type: serial;"`
+  Id int `gorm:"id"`
 }
