@@ -41,7 +41,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
 
 hasuraClaims := &HasuraClaims{
   Role: "user",
-  UserId: string(user.Model.ID),
+  UserId: user.Model.ID,
   DefaultRole: "user",
   Roles: []string{"mine","user"},
 }
