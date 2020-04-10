@@ -43,7 +43,7 @@ hasuraClaims := &HasuraClaims{
   Role: "user",
   UserId: user.Model.ID,
   DefaultRole: "user",
-  Roles: `["mine","user"]`,
+  Roles: []string{"mine","user"},
 }
 
 token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{

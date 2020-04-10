@@ -60,7 +60,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
     Role: "user",
     UserId: user.Model.ID,
     DefaultRole: "user",
-    Roles: `["mine","user"]`,
+    Roles: []string{"mine","user"},
   }
 
   token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
