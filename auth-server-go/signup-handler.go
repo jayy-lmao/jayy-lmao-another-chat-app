@@ -10,6 +10,7 @@ import (
   "time"
   "log"
   "os"
+  "golang.org/x/crypto/bcrypt"
 )
 
 func SignupHandler(w http.ResponseWriter, r *http.Request){
@@ -28,9 +29,12 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
 
   json.Unmarshal(reqBody, &signupDetails)
 
+  hashedPassword, err := bcrypt.GenerateFromPassword([]byte(signupDetails.Password), 8)
+
+
   user := User {
     Username: signupDetails.Username,
-    Password: signupDetails.Password,
+    Password: string(hashedPassword),
     Displayname: signupDetails.Displayname,
   }
 

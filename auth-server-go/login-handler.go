@@ -10,6 +10,7 @@ import (
   "time"
   "log"
   "os"
+  "golang.org/x/crypto/bcrypt"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request){
@@ -26,10 +27,16 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
     fmt.Fprintf(w, "Please enter a username and password")
   }
   json.Unmarshal(reqBody, &loginDetails)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(loginDetails.Password), 8)
 
+  var user User;
+
+  db.First(&user, "id = ?", loginDetails.Username)
+
+  log.Printf("%+v", user)
 
   // Where we should do the database lookup
-  if loginDetails.Username != "myusername" || loginDetails.Password != "mypassword" {
+  if string(hashedPassword) != user.Password {
     w.WriteHeader(http.StatusUnauthorized)
     io.WriteString(w, `{"error" : "invalid_credentials"}`)
     return
@@ -37,7 +44,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
 
   hasuraClaims := &HasuraClaims{
     Role: "user",
-    UserId: 4,
+    UserId: user.Model.ID,
     DefaultRole: "user",
     Roles: `["mine","user"]`,
   }
