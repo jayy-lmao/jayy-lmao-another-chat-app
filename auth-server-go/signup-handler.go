@@ -45,11 +45,11 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
   if d.Error != nil {
     w.WriteHeader(http.StatusBadRequest)
     io.WriteString(w, `{"error" : "error_creating_user"}`)
+    return
   }
 
 
   log.Printf("Created user %d\n", user.Model.ID);
-  log.Printf("%+v\n",user)
 
 
   hasuraClaims := &HasuraClaims{
