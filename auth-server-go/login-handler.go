@@ -27,7 +27,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
   }
   json.Unmarshal(reqBody, &loginDetails)
 
-  userId := 5;
 
   // Where we should do the database lookup
   if loginDetails.Username != "myusername" || loginDetails.Password != "mypassword" {
@@ -38,7 +37,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
 
   hasuraClaims := &HasuraClaims{
     Role: "user",
-    UserId: userId,
+    UserId: 4,
     DefaultRole: "user",
     Roles: `["mine","user"]`,
   }

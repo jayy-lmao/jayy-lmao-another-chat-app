@@ -47,16 +47,14 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
     io.WriteString(w, `{"error" : "error_creating_user"}`)
   }
 
-  // var createdUser User;
 
-  // db.First(&createdUser, "username = ?", user.Username)
-
-  log.Printf("Created user %d\n", user.Id);
+  log.Printf("Created user %d\n", user.Model.ID);
+  log.Printf("%+v\n",user)
 
 
   hasuraClaims := &HasuraClaims{
     Role: "user",
-    UserId: user.Id,
+    UserId: user.Model.ID,
     DefaultRole: "user",
     Roles: `["mine","user"]`,
   }
