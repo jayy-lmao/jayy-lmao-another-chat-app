@@ -55,12 +55,10 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
 
   log.Printf("%+v", user)
 
-  log.Printf("Created user %d\n", user.Model.ID);
-
 
   hasuraClaims := &HasuraClaims{
     Role: "user",
-    UserId: string(user.Model.ID),
+    UserId: user.UUID,
     DefaultRole: "user",
     Roles: []string{"mine","user"},
   }
