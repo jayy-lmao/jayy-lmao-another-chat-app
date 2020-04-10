@@ -32,9 +32,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
 
   db.First(&user, "username = ?", loginDetails.Username)
 
-  log.Printf("%+v", user)
-
-  // Where we should do the database lookup
   bcryptErr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginDetails.Password))
 
   if bcryptErr != nil { w.WriteHeader(http.StatusUnauthorized)
