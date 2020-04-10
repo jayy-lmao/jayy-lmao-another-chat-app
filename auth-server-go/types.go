@@ -5,7 +5,7 @@ import (
 
   type HasuraClaims struct {
     Roles []string `json:"X-Hasura-Allowed-Roles"`
-    UserId uint `json:"X-Hasura-User-Id"`
+    UserId string `json:"X-Hasura-User-Id"`
     DefaultRole string `json:"X-Hasura-Default-Role"`
     Role string `json:"X-Hasura-Role"`
   }
