@@ -25,5 +25,5 @@ type User struct {
   Username string `gorm:"username"`
   Password string `gorm:"password"`
   Displayname string `gorm:"displayname"`
-  Id int `gorm:"id"`
+  Id int `gorm:"id; type: serial;"`
 }
