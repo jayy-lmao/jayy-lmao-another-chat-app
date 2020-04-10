@@ -52,8 +52,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
     return
   }
 
-
-  log.Printf("%+v", user)
+  log.Printf("user added %s", user.UUID)
 
 
   hasuraClaims := &HasuraClaims{
