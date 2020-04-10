@@ -31,7 +31,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
 
   var user User;
 
-  db.First(&user, "id = ?", loginDetails.Username)
+  db.First(&user, "username = ?", loginDetails.Username)
 
   log.Printf("%+v", user)
 
