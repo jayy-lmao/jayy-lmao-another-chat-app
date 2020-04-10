@@ -34,6 +34,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
   db.First(&user, "username = ?", loginDetails.Username)
 
   log.Printf("%+v", user)
+  log.Print(hashedPassword)
 
   // Where we should do the database lookup
   if string(hashedPassword) != user.Password {
