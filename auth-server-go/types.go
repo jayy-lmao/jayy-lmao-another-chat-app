@@ -27,7 +27,7 @@ type SignupDetails struct {
 
 type User struct {
   gorm.Model
-  ID  uuid.UUID `gorm:"column:id;type:uuid;primary_key;"`
+  ID string `gorm:"id"`
   Username string `gorm:"username"`
   Password string `gorm:"password"`
   Displayname string `gorm:"displayname"`
@@ -35,5 +35,5 @@ type User struct {
 
 func (base *User) BeforeCreate(scope *gorm.Scope) error {
   uuid := uuid.NewV4()
-  return scope.SetColumn("ID", uuid)
+  return scope.SetColumn("ID",uuid.String())
 }
