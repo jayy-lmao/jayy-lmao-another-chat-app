@@ -40,18 +40,24 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
     io.WriteString(w, `{"error" : "user_exists"}`)
     return
   }
-  db.Create(&user)
+
+  createdUser := new(User);
+  d := db.Create(&user).Scan(&createdUser)
+  if d.Error != nil {
+    w.WriteHeader(http.StatusBadRequest)
+    io.WriteString(w, `{"error" : "error_creating_user"}`)
+  }
 
   // var createdUser User;
 
   // db.First(&createdUser, "username = ?", user.Username)
 
-  log.Printf("Created user %d\n", user.Id);
+  log.Printf("Created user %d\n", createdUser.Id);
 
 
   hasuraClaims := &HasuraClaims{
     Role: "user",
-    UserId: user.Id,
+    UserId: createdUser.Id,
     DefaultRole: "user",
     Roles: `["mine","user"]`,
   }
