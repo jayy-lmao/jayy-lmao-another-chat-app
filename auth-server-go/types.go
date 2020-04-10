@@ -26,5 +26,4 @@ import (
     Username string `gorm:"username"`
     Password string `gorm:"password"`
     Displayname string `gorm:"displayname"`
-    Id uint `gorm:"column:id; AUTO_INCREMENT;primary_key"`
   }

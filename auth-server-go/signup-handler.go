@@ -55,6 +55,7 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
 
   log.Printf("Created user %d\n", user.Model.ID);
 
+  log.Printf("%+v", user)
 
   hasuraClaims := &HasuraClaims{
     Role: "user",
