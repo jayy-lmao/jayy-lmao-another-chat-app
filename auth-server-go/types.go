@@ -4,10 +4,10 @@ import (
   "github.com/jinzhu/gorm")
 
   type HasuraClaims struct {
-    Roles []string `json:"x-hasura-allowed-roles"`
-    UserId uint `json:"x-hasura-user-id"`
-    DefaultRole string `json:"x-hasura-default-role"`
-    Role string `json:"x-hasura-role"`
+    Roles []string `json:"X-Hasura-Allowed-Roles"`
+    UserId uint `json:"X-Hasura-User-Id"`
+    DefaultRole string `json:"X-Hasura-Default-Role"`
+    Role string `json:"X-Hasura-Role"`
   }
 
   type LoginDetails struct {
