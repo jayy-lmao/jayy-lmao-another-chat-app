@@ -9,10 +9,14 @@ import (
   "net/http"
   "time"
   "log"
+  "os"
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request){
   log.Printf("%s %s %s\n", r.RemoteAddr, r.Method, r.URL)
+
+  JWT_SECRET := os.Getenv("JWT_SECRET")
+
   var loginDetails LoginDetails
   w.Header().Add("Content-Type", "application/json")
 
@@ -46,7 +50,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request){
     "https://hasura.io/jwt/claims": hasuraClaims,
   })
 
-  tokenString, err := token.SignedString([]byte(APP_KEY))
+  tokenString, err := token.SignedString([]byte(JWT_SECRET))
 
   if err != nil {
     w.WriteHeader(http.StatusInternalServerError)
