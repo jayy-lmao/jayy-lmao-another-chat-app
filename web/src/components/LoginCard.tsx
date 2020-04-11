@@ -3,6 +3,7 @@ import { useContext } from "preact/compat";
 import { useState } from "preact/compat";
 import { AuthContext } from "../context/authContext";
 import { useLocation } from "wouter/preact";
+import '../scss/login-card.scss';
 
 const AUTH_API = "https://afternoon-spire-21005.herokuapp.com";
 
@@ -47,7 +48,6 @@ export default function LoginCard() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [_, setLocation] = useLocation();
-  console.log({auth})
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -66,8 +66,8 @@ export default function LoginCard() {
 
   return (
     <div className="card">
-      <h1>Login</h1>
-      <form className="form" onSubmit={handleSubmit}>
+      <h1 className="card-title">Login</h1>
+      <form className="card-form" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="username"

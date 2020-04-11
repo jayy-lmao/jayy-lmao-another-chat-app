@@ -1,0 +1,21 @@
+.card {
+  background: grey;
+  width: 400px;
+  height: 400px;
+  padding: 24px 24px;
+}
+
+.card-title {
+  display: inline-block;
+}
+
+
+.card-form {
+  display:flex;
+  flex-direction: column;
+}
+
+.card-form input {
+  margin-bottom: 12px;
+}
+
