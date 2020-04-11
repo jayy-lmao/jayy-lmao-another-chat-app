@@ -39,6 +39,55 @@
             }
           }
         }
+      ],
+      "insert_permissions": [
+        {
+          "role": "user",
+          "permission": {
+            "check": {
+              "owner_id": {
+                "_eq": "X-Hasura-User-Id"
+              }
+            },
+            "set": {
+              "owner_id": "x-hasura-User-Id"
+            },
+            "columns": [
+              "name",
+              "picture"
+            ]
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "user",
+          "permission": {
+            "columns": [
+              "created_at",
+              "id",
+              "name",
+              "owner_id",
+              "picture"
+            ],
+            "filter": {
+              "_or": [
+                {
+                  "owner_id": {
+                    "_eq": "X-Hasura-User-Id"
+                  }
+                },
+                {
+                  "members": {
+                    "user_uuid": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
       ]
     },
     {
@@ -56,7 +105,71 @@
         {
           "name": "user",
           "using": {
-            "foreign_key_constraint_on": "user_id"
+            "foreign_key_constraint_on": "user_uuid"
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "user",
+          "permission": {
+            "check": {
+              "_or": [
+                {
+                  "chat": {
+                    "owner": {
+                      "uuid": {
+                        "_eq": "X-Hasura-User-Id"
+                      }
+                    }
+                  }
+                },
+                {
+                  "chat": {
+                    "owner_id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                }
+              ]
+            },
+            "columns": [
+              "chat_id",
+              "user_uuid"
+            ]
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "user",
+          "permission": {
+            "columns": [
+              "chat_id",
+              "user_uuid"
+            ],
+            "filter": {
+              "_or": [
+                {
+                  "chat": {
+                    "members": {
+                      "user": {
+                        "uuid": {
+                          "_eq": "X-Hasura-User-Id"
+                        }
+                      }
+                    }
+                  }
+                },
+                {
+                  "chat": {
+                    "owner_id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                }
+              ]
+            }
           }
         }
       ]
@@ -76,7 +189,75 @@
         {
           "name": "sender",
           "using": {
-            "foreign_key_constraint_on": "sender_id"
+            "foreign_key_constraint_on": "sender_uuid"
+          }
+        }
+      ],
+      "insert_permissions": [
+        {
+          "role": "user",
+          "permission": {
+            "check": {
+              "_or": [
+                {
+                  "chat": {
+                    "members": {
+                      "user_uuid": {
+                        "_eq": "X-Hasura-User-Id"
+                      }
+                    }
+                  }
+                },
+                {
+                  "chat": {
+                    "owner_id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                }
+              ]
+            },
+            "set": {
+              "sender_uuid": "x-hasura-User-Id"
+            },
+            "columns": [
+              "chat_id",
+              "content"
+            ]
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "user",
+          "permission": {
+            "columns": [
+              "chat_id",
+              "id",
+              "content",
+              "sender_uuid",
+              "created_at"
+            ],
+            "filter": {
+              "_or": [
+                {
+                  "chat": {
+                    "members": {
+                      "user_uuid": {
+                        "_eq": "X-Hasura-User-Id"
+                      }
+                    }
+                  }
+                },
+                {
+                  "chat": {
+                    "owner_id": {
+                      "_eq": "X-Hasura-User-Id"
+                    }
+                  }
+                }
+              ]
+            }
           }
         }
       ]
@@ -84,23 +265,11 @@
     {
       "table": {
         "schema": "public",
-        "name": "user"
+        "name": "users"
       },
       "array_relationships": [
         {
-          "name": "member_of",
-          "using": {
-            "foreign_key_constraint_on": {
-              "column": "user_id",
-              "table": {
-                "schema": "public",
-                "name": "member"
-              }
-            }
-          }
-        },
-        {
-          "name": "owner",
+          "name": "chats",
           "using": {
             "foreign_key_constraint_on": {
               "column": "owner_id",
@@ -112,15 +281,29 @@
           }
         },
         {
-          "name": "sender",
+          "name": "members",
           "using": {
             "foreign_key_constraint_on": {
-              "column": "sender_id",
+              "column": "user_uuid",
               "table": {
                 "schema": "public",
-                "name": "message"
+                "name": "member"
               }
             }
+          }
+        }
+      ],
+      "select_permissions": [
+        {
+          "role": "user",
+          "permission": {
+            "columns": [
+              "created_at",
+              "displayname",
+              "username",
+              "uuid"
+            ],
+            "filter": {}
           }
         }
       ]
