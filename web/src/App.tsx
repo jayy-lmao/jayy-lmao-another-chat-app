@@ -2,6 +2,7 @@ import { h } from "preact";
 import { Route, Switch } from "wouter/preact";
 import { AuthContext } from "./context/authContext";
 import { useState, useContext, useMemo } from "preact/compat";
+import LoginPage from './pages/notLoggedIn/LoginPage';
 
 function IsLoggedIn() {
   const { auth } = useContext(AuthContext);
@@ -28,12 +29,12 @@ function App() {
   return (
     <div className="app">
       <AuthContext.Provider value={providerValue}>
-        {isLoggedIn ? (
+        {!isLoggedIn ? (
           <Switch>
             {/* This first should be the landing page */}
             <Route path="/" component={IsLoggedIn} />
             <Route path="/signup" component={IsLoggedIn} />
-            <Route path="/login" component={IsLoggedIn} />
+            <Route path="/login" component={LoginPage} />
           </Switch>
         ) : (
           <Switch>

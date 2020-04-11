@@ -14,6 +14,8 @@ import (
 )
 
 func LoginHandler(w http.ResponseWriter, r *http.Request){
+  w.Header().Set("Access-Control-Allow-Origin", "localhost:1234")
+  w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
   log.Printf("%s %s %s\n", r.RemoteAddr, r.Method, r.URL)
 
   JWT_SECRET := os.Getenv("JWT_SECRET")
