@@ -1,3 +1,5 @@
 import {createContext} from 'preact/compat'
 
-export const AuthContext = createContext(null);
+let setAuth: any;
+
+export const AuthContext = createContext({auth: '', setAuth });
