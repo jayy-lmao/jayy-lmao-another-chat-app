@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es5",                       
+    "jsx":"react",
+    "jsxFactory":"h",
+    "lib":["dom","esnext"],
+    "module": "esnext",                   
+    "strict": true,                          
+    "moduleResolution":"Node",
+    "esModuleInterop": true,                  
+    "forceConsistentCasingInFileNames": true
+  },
+  "include":["src"]
+}
