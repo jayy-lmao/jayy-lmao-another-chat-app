@@ -1,5 +1,14 @@
-import {createContext} from 'preact/compat'
+import { createContext } from "preact/compat";
 
 let setAuth: any;
 
-export const AuthContext = createContext({auth: '', setAuth });
+export interface Auth {
+  token?: string;
+  isLoggedIn: boolean;
+}
+
+let auth: Auth = {
+  isLoggedIn: false,
+};
+
+export const AuthContext = createContext({ auth, setAuth });
