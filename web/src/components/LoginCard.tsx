@@ -2,8 +2,7 @@ import { h } from "preact";
 import { useContext } from "preact/compat";
 import { useState } from "preact/compat";
 import { AuthContext } from "../context/authContext";
-import { useLocation } from "wouter/preact";
-import '../scss/login-card.scss';
+import "../scss/login-card.scss";
 
 const AUTH_API = "https://afternoon-spire-21005.herokuapp.com";
 
@@ -13,7 +12,7 @@ interface SyntheticEvent {
 
 interface LoginResponse {
   error?: string;
-  data?: { token: string };
+  data?: { token: string; username: string; displayname: string };
 }
 
 async function login(
@@ -43,11 +42,10 @@ async function login(
 }
 
 export default function LoginCard() {
-  const { auth,setAuth } = useContext(AuthContext);
+  const { setAuth } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [_, setLocation] = useLocation();
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -57,12 +55,10 @@ export default function LoginCard() {
     }
 
     const token = data?.token;
-    setAuth({ token, isLoggedIn: true });
+    const resUsername = data?.username;
+    const displayname = data?.displayname;
+    setAuth({ token, isLoggedIn: true, username: resUsername, displayname });
   };
-
-  if (auth.isLoggedIn){
-    setLocation('/')
-  }
 
   return (
     <div className="card">

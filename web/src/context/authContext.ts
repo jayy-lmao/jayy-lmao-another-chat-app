@@ -4,6 +4,8 @@ let setAuth: any;
 
 export interface Auth {
   token?: string;
+  username?: string;
+  displayname?: string;
   isLoggedIn: boolean;
 }
 

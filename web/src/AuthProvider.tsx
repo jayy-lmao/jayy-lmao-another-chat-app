@@ -7,15 +7,23 @@ interface Children {
   children: JSX.Element[] | JSX.Element;
 }
 
+const initialAuthState = {
+  isLoggedIn: !!localStorage.getItem("token"),
+  token: localStorage.getItem("token") || "",
+  displayname: localStorage.getItem("displayname") || "",
+  username: localStorage.getItem("username") || "",
+};
+
 export default function Auth({ children }: Children) {
-  const [auth, setAuth] = useState({ isLoggedIn: false, token: "" });
+  const [auth, setAuth] = useState(initialAuthState);
+
   useMemo(() => {
-    if (auth.token.length > 0) {
+    if (auth.token){
       localStorage.setItem("token", auth.token);
-    }
-    const token = localStorage.getItem("token");
-    if (token && token.length > 0) {
-      setAuth({ token, isLoggedIn: true });
+      localStorage.setItem("username", auth.username);
+      localStorage.setItem("displayname", auth.displayname);
+    } else {
+      localStorage.clear();
     }
   }, [auth.token]);
   const providerValue = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);
