@@ -67,6 +67,6 @@ if err != nil {
   io.WriteString(w, `{"error":"token_gen_failed"}`)
   return
 }
-io.WriteString(w,`{"token":"`+tokenString+`"}`)
+io.WriteString(w,`{"token":"`+tokenString+`", "username":"`+user.Username+`","displayname":"`+user.Displayname+`"}`)
 return
 }
