@@ -14,7 +14,14 @@ import (
 )
 
 func SignupHandler(w http.ResponseWriter, r *http.Request){
+  w.Header().Set("Access-Control-Allow-Origin", "http://localhost:1234")
+  w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+  w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
   log.Printf("%s %s %s\n", r.RemoteAddr, r.Method, r.URL)
+
+  if (*r).Method == "OPTIONS" {
+    return
+  }
 
   JWT_SECRET := os.Getenv("JWT_SECRET")
 
@@ -76,6 +83,6 @@ func SignupHandler(w http.ResponseWriter, r *http.Request){
     io.WriteString(w, `{"error":"token_gen_failed"}`)
     return
   }
-  io.WriteString(w,`{"token":"`+tokenString+`"}`)
+  io.WriteString(w,`{"token":"`+tokenString+`", "username":"`+user.Username+`","displayname":"`+user.Displayname+`"}`)
   return
 }
