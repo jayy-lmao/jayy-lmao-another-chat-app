@@ -1,7 +1,7 @@
 import { h } from 'preact';
-import LoginCard from '../../components/LoginCard';
+import SignupCard from '../../components/SignupCard';
 
-export default function LoginPage() {
-  return <LoginCard />
+export default function SignupPage() {
+  return <SignupCard />
 }
 

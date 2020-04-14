@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { Route, Switch, Redirect } from "wouter/preact";
 import LoginPage from "./pages/notLoggedIn/LoginPage";
+import SignupPage from "./pages/notLoggedIn/SignupPage";
 import { AuthContext } from "./context/authContext";
 import { useContext } from "preact/compat";
 
@@ -41,12 +42,13 @@ export default function Routes() {
       <Route path="/" component={IsLoggedIn} />
       <Route path="/another" component={IsLoggedIn} />
       <Route path="/login" component={RedirectHome} />
+      <Route path="/signup" component={RedirectHome} />
     </Switch>
   ) : (
     <Switch>
       {/* This first should be the landing page */}
       <Route path="/" component={IsNotLoggedIn} />
-      <Route path="/signup" component={IsNotLoggedIn} />
+      <Route path="/signup" component={SignupPage} />
       <Route path="/login" component={LoginPage} />
     </Switch>
   );

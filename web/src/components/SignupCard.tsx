@@ -10,20 +10,16 @@ interface SyntheticEvent {
   preventDefault(): void;
 }
 
-interface SignupResponse {
+interface LoginResponse {
   error?: string;
   data?: { token: string; username: string; displayname: string };
 }
 
-async function signup(
+async function login(
   username: string,
-  password: string,
-  confirmPassword: string
-): Promise<SignupResponse> {
-  if (password !== confirmPassword){
-    return {error: "Passwords do not match"};
-  }
-  const response = await fetch(`${AUTH_API}/signup`, {
+  password: string
+): Promise<LoginResponse> {
+  const response = await fetch(`${AUTH_API}/login`, {
     method: "Post",
     headers: {
       "Content-Type": "application/json",
@@ -33,8 +29,8 @@ async function signup(
       password,
     }),
   });
-  if (response.status === 400) {
-    return { error: "That account already exists" };
+  if (response.status === 401) {
+    return { error: "Login details incorrect" };
   }
 
   try {
@@ -45,16 +41,15 @@ async function signup(
   }
 }
 
-export default function SignupCard() {
+export default function LoginCard() {
   const { setAuth } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const { data, error } = await signup(username, password, confirmPassword);
+    const { data, error } = await login(username, password);
     if (error) {
       setErrorMessage(error);
     }
@@ -67,7 +62,7 @@ export default function SignupCard() {
 
   return (
     <div className="card">
-      <h1 className="card-title">Signup</h1>
+      <h1 className="card-title">Login</h1>
       <form className="card-form" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -81,13 +76,7 @@ export default function SignupCard() {
           onChange={(e) => setPassword(e.currentTarget.value)}
           value={password}
         />
-        <input
-          type="password"
-          placeholder="confirm password"
-          onChange={(e) => setConfirmPassword(e.currentTarget.value)}
-          value={confirmPassword}
-        />
-        <button type="submit">Signup</button>
+        <button type="submit">Login</button>
         <span>{errorMessage}</span>
       </form>
     </div>
