@@ -1,13 +1,15 @@
 .card {
-  background: grey;
   width: 400px;
   height: 400px;
   padding: 24px 24px;
   position: relative;
+  border-radius: 20px;
+  box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
 }
 
 .card-title {
   display: inline-block;
+  margin-bottom: 36px;
 }
 
 .card-form {
@@ -16,7 +18,36 @@
 }
 
 .card-form input {
-  margin-bottom: 12px;
+  border: none;
+  margin-bottom: 24px;
+  padding: 8px;
+  border: 1px solid white;
+  border-radius: 50px;
+  background: #ffffff;
+  box-shadow: inset 3px 3px 7px #d9d9d9, inset -3px -3px 7px #ffffff;
+  &:focus {
+    outline: 0;
+    border: 1px solid lightblue;
+  }
+}
+
+.card-form-button {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 50px;
+  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  box-shadow: 6px 6px 12px #d9d9d9, -6px -6px 12px #ffffff;
+  height: 50px;
+  width: 200px;
+  &:focus {
+    outline: none;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  }
 }
 
 .card--loading {
@@ -29,4 +60,11 @@
   position: absolute;
   top: 0;
   width: 100%;
+}
+.card-details {
+  font-size: 14px;
+  color: grey;
+  a {
+    text-decoration: none;
+  }
 }

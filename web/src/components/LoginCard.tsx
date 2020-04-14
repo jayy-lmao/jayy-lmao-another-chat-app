@@ -2,6 +2,7 @@ import { h } from "preact";
 import { useContext } from "preact/compat";
 import { useState } from "preact/compat";
 import { AuthContext } from "../context/authContext";
+import { Link } from "wouter/preact";
 import Loader from "./loader";
 import "../scss/card.scss";
 
@@ -56,8 +57,8 @@ export default function LoginCard() {
     setIsLoading(false);
     if (error) {
       setErrorMessage(error);
+      return;
     }
-
     const token = data?.token;
     const resUsername = data?.username;
     const displayname = data?.displayname;
@@ -80,16 +81,19 @@ export default function LoginCard() {
           onChange={(e) => setPassword(e.currentTarget.value)}
           value={password}
         />
-        <button disabled={isLoading} type="submit">
+        <button className="card-form-button" disabled={isLoading} type="submit">
           Login
         </button>
-        <span>{errorMessage}</span>
       </form>
       {isLoading && (
         <div className="card--loading">
           <Loader />
         </div>
       )}
+      <p className="card-details">
+        Dont have an account? Click <Link to="/signup">here</Link>
+      </p>
+      <p>{errorMessage}</p>
     </div>
   );
 }

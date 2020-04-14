@@ -1,0 +1,13 @@
+* {
+    font-family: lato, helvetica, arial, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.page--empty {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

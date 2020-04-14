@@ -1,7 +1,10 @@
-import { h } from 'preact';
-import LoginCard from '../../components/LoginCard';
+import { h } from "preact";
+import LoginCard from "../../components/LoginCard";
 
 export default function LoginPage() {
-  return <LoginCard />
+  return (
+    <div className="page--empty">
+      <LoginCard />{" "}
+    </div>
+  );
 }
-
