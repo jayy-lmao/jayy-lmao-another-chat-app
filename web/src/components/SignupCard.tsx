@@ -2,6 +2,7 @@ import { h } from "preact";
 import { useContext } from "preact/compat";
 import { useState } from "preact/compat";
 import { AuthContext } from "../context/authContext";
+import Loader from "./loader";
 import "../scss/card.scss";
 
 const AUTH_API = "https://afternoon-spire-21005.herokuapp.com";
@@ -10,16 +11,20 @@ interface SyntheticEvent {
   preventDefault(): void;
 }
 
-interface LoginResponse {
+interface SignupResponse {
   error?: string;
   data?: { token: string; username: string; displayname: string };
 }
 
-async function login(
+async function signup(
   username: string,
-  password: string
-): Promise<LoginResponse> {
-  const response = await fetch(`${AUTH_API}/login`, {
+  password: string,
+  confirmPassword: string
+): Promise<SignupResponse> {
+  if (password !== confirmPassword) {
+    return { error: "Passwords do not match" };
+  }
+  const response = await fetch(`${AUTH_API}/signup`, {
     method: "Post",
     headers: {
       "Content-Type": "application/json",
@@ -29,8 +34,8 @@ async function login(
       password,
     }),
   });
-  if (response.status === 401) {
-    return { error: "Login details incorrect" };
+  if (response.status === 400) {
+    return { error: "That account already exists" };
   }
 
   try {
@@ -41,15 +46,19 @@ async function login(
   }
 }
 
-export default function LoginCard() {
+export default function SignupCard() {
   const { setAuth } = useContext(AuthContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const { data, error } = await login(username, password);
+    setIsLoading(true);
+    const { data, error } = await signup(username, password, confirmPassword);
+    setIsLoading(false);
     if (error) {
       setErrorMessage(error);
     }
@@ -62,7 +71,7 @@ export default function LoginCard() {
 
   return (
     <div className="card">
-      <h1 className="card-title">Login</h1>
+      <h1 className="card-title">Signup</h1>
       <form className="card-form" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -76,9 +85,22 @@ export default function LoginCard() {
           onChange={(e) => setPassword(e.currentTarget.value)}
           value={password}
         />
-        <button type="submit">Login</button>
+        <input
+          type="password"
+          placeholder="confirm password"
+          onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+          value={confirmPassword}
+        />
+        <button disabled={isLoading} type="submit">
+          Signup
+        </button>
         <span>{errorMessage}</span>
       </form>
+      {isLoading && (
+        <div className="card--loading">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }
