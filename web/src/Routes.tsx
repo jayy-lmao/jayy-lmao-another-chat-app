@@ -2,12 +2,19 @@ import { h } from "preact";
 import { Route, Switch, Redirect } from "wouter/preact";
 import LoginPage from "./pages/notLoggedIn/LoginPage";
 import SignupPage from "./pages/notLoggedIn/SignupPage";
+import FriendsPage from "./pages/loggedIn/FriendsPage";
+import ChatListPage from "./pages/loggedIn/ChatListPage";
 import { AuthContext } from "./context/authContext";
 import { useContext } from "preact/compat";
 
+const client = new GraphQLClient({
+  url: "https://jayy-lmao-another-chat-app.herokuapp.com/v1/graphql",
+});
+import { GraphQLClient, ClientContext } from "graphql-hooks";
+
 function IsLoggedIn() {
   const { auth, setAuth } = useContext(AuthContext);
-  console.log({auth})
+  console.log({ auth });
   return (
     <div>
       <p>Hello there {auth.displayname}</p>
@@ -37,13 +44,18 @@ function RedirectHome() {
 
 export default function Routes() {
   const { auth } = useContext(AuthContext);
+  client.setHeader("Authorization", `Bearer ${auth.token}`);
   return auth.isLoggedIn ? (
-    <Switch>
-      <Route path="/" component={IsLoggedIn} />
-      <Route path="/another" component={IsLoggedIn} />
-      <Route path="/login" component={RedirectHome} />
-      <Route path="/signup" component={RedirectHome} />
-    </Switch>
+    <ClientContext.Provider value={client}>
+      <Switch>
+        <Route path="/" component={IsLoggedIn} />
+        <Route path="/another" component={IsLoggedIn} />
+        <Route path="/login" component={RedirectHome} />
+        <Route path="/signup" component={RedirectHome} />
+        <Route path="/friends" component={FriendsPage} />
+        <Route path="/chats" component={ChatListPage} />
+      </Switch>
+    </ClientContext.Provider>
   ) : (
     <Switch>
       {/* This first should be the landing page */}
