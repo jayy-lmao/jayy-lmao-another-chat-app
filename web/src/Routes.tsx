@@ -4,12 +4,11 @@ import LoginPage from "./pages/notLoggedIn/LoginPage";
 import SignupPage from "./pages/notLoggedIn/SignupPage";
 import FriendsPage from "./pages/loggedIn/FriendsPage";
 import ChatListPage from "./pages/loggedIn/ChatListPage";
+import ChatPage from "./pages/loggedIn/ChatPage";
 import { AuthContext } from "./context/authContext";
 import { useContext } from "preact/compat";
+import { SubscriptionClient } from "subscriptions-transport-ws";
 
-const client = new GraphQLClient({
-  url: "https://jayy-lmao-another-chat-app.herokuapp.com/v1/graphql",
-});
 import { GraphQLClient, ClientContext } from "graphql-hooks";
 
 function IsLoggedIn() {
@@ -44,6 +43,22 @@ function RedirectHome() {
 
 export default function Routes() {
   const { auth } = useContext(AuthContext);
+  console.log('create a client')
+  const client = new GraphQLClient({
+    url: "https://jayy-lmao-another-chat-app.herokuapp.com/v1/graphql",
+    subscriptionClient: new SubscriptionClient(
+      "ws://jayy-lmao-another-chat-app.herokuapp.com/v1/graphql",
+      {
+        reconnect: true,
+        timeout: 30000,
+        connectionParams: {
+          headers: {
+            Authorization: `Bearer ${auth.token}`,
+          },
+        },
+      }
+    ),
+  });
   client.setHeader("Authorization", `Bearer ${auth.token}`);
   return auth.isLoggedIn ? (
     <ClientContext.Provider value={client}>
@@ -54,6 +69,9 @@ export default function Routes() {
         <Route path="/signup" component={RedirectHome} />
         <Route path="/friends" component={FriendsPage} />
         <Route path="/chats" component={ChatListPage} />
+        <Route path="/chats/:chatId">
+          {(params) => <ChatPage chatId={params.chatId} />}
+        </Route>
       </Switch>
     </ClientContext.Provider>
   ) : (
