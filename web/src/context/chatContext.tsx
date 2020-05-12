@@ -1,4 +1,4 @@
-import { h, JSX } from "preact";
+import { h } from "preact";
 import { useState, useContext, createContext } from "preact/compat";
 import { useSubscription } from "graphql-hooks";
 
@@ -22,7 +22,7 @@ subscription chatSub{
 `;
 
 interface ProviderProps {
-  children: JSX.Element;
+  children: Element;
 }
 
 function ChatProvider({ children }: ProviderProps) {
