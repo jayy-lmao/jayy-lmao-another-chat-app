@@ -7,7 +7,7 @@ import ChatListPage from "./pages/loggedIn/ChatListPage";
 import ChatPage from "./pages/loggedIn/ChatPage";
 import { AuthContext } from "./context/authContext";
 import { useContext } from "preact/compat";
-import { SubscriptionClient } from "subscriptions-transport-ws";
+import { CustomSubscriptionClient } from "./utils/custom-subscription";
 
 import { GraphQLClient, ClientContext } from "graphql-hooks";
 
@@ -43,10 +43,10 @@ function RedirectHome() {
 
 export default function Routes() {
   const { auth } = useContext(AuthContext);
-  console.log('create a client')
+  console.log("create a client");
   const client = new GraphQLClient({
     url: "https://jayy-lmao-another-chat-app.herokuapp.com/v1/graphql",
-    subscriptionClient: new SubscriptionClient(
+    subscriptionClient: new CustomSubscriptionClient(
       "ws://jayy-lmao-another-chat-app.herokuapp.com/v1/graphql",
       {
         reconnect: true,

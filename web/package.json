@@ -6,21 +6,22 @@
   "scripts": {
     "watch": "parcel src/index.html",
     "build": "parcel build src/index.html",
-    "build:prod": "parcel build src/index.html --experimental-scope-hoisting"
+    "build:prod": "parcel build src/index.html --experimental-scope-hoisting",
+    "lint": "eslint src/"
   },
   "dependencies": {
-    "graphql": "^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.1 || ^14.0.2",
+    "graphql": "^15.0.0",
     "graphql-hooks": "^4.4.4",
     "preact": "^10.3.4",
     "react": "^16.8.0",
-    "subscriptions-transport-ws": "0.8.2",
+    "subscriptions-transport-ws": "^0.9.16",
     "wouter": "^2.4.0",
     "wouter-preact": "^2.4.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.0.0",
     "eslint-config-preact": "^1.1.1",
     "parcel-bundler": "^1.12.4",
     "sass": "^1.26.3",
