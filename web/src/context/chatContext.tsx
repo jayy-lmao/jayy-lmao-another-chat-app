@@ -1,8 +1,9 @@
 import { h, JSX } from "preact";
-import { useState, createContext } from "preact/compat";
+import { useState, useContext, createContext } from "preact/compat";
 import { useSubscription } from "graphql-hooks";
 
-const ChatContext = createContext([]);
+const ChatListContext = createContext([]);
+const ChatContext = createContext((chatId: string) => ({ id: chatId }));
 
 const CHAT_SUBSCRIPTION = `
 subscription chatSub{
@@ -21,7 +22,7 @@ subscription chatSub{
 `;
 
 interface ProviderProps {
-  children: JSX.Element[];
+  children: JSX.Element;
 }
 
 function ChatProvider({ children }: ProviderProps) {
@@ -32,9 +33,38 @@ function ChatProvider({ children }: ProviderProps) {
     }
     setNewMessages(data.chats);
   });
+  function getChatById(chatId: string) {
+    console.log({ newMessages, foo: "bar" });
+    const chat = newMessages.find(({ id }) => id == chatId);
+    if (!chat) {
+      return { id: chatId };
+    }
+    return chat;
+  }
+
   return (
-    <ChatContext.Provider value={newMessages}>{children}</ChatContext.Provider>
+    <ChatListContext.Provider value={newMessages}>
+      <ChatContext.Provider value={getChatById}>
+        {children}
+      </ChatContext.Provider>
+    </ChatListContext.Provider>
   );
 }
 
-export default ChatProvider;
+function useChatState() {
+  const context = useContext(ChatContext);
+  if (context === undefined) {
+    throw new Error("useChatState must be used within ChatProvider");
+  }
+  return context;
+}
+
+function useChatListState() {
+  const context = useContext(ChatListContext);
+  if (context === undefined) {
+    throw new Error("useChatListState must be used within ChatListProvider");
+  }
+  return context;
+}
+
+export { ChatProvider, useChatState, useChatListState };
