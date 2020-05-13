@@ -2,7 +2,7 @@ import { h } from "preact";
 import Chat from "../../components/Chat";
 
 interface ChatProps {
-  chatId: number;
+  chatId: string;
 }
 
 export default function ChatPage({ chatId }: ChatProps) {

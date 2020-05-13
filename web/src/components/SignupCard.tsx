@@ -1,6 +1,5 @@
 import { h } from "preact";
-import { useContext } from "preact/compat";
-import { useState } from "preact/compat";
+import { useContext, useState  } from "preact/compat";
 import { AuthContext } from "../context/authContext";
 import { Link } from "wouter/preact";
 import Loader from "./loader";

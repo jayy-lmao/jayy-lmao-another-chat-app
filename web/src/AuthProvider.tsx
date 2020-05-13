@@ -1,7 +1,6 @@
 import { h } from "preact";
-import { JSX } from "preact/compat";
+import {  useState, useMemo  } from "preact/compat";
 import { AuthContext } from "./context/authContext";
-import { useState, useMemo } from "preact/compat";
 
 interface Children {
   children: JSX.Element[] | JSX.Element;
@@ -25,7 +24,7 @@ export default function Auth({ children }: Children) {
     } else {
       localStorage.clear();
     }
-  }, [auth.token]);
+  }, [auth.token, auth.username, auth.displayname]);
   const providerValue = useMemo(() => ({ auth, setAuth }), [auth, setAuth]);
   return (
     <AuthContext.Provider value={providerValue}>

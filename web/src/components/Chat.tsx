@@ -1,33 +1,46 @@
 import { h } from "preact";
-// import { AuthContext } from "../context/authContext";
-import Loader from "./loader";
-import "../scss/card.scss";
-import { useQuery } from "graphql-hooks";
-
-const CHAT_QUERY = `
-query getChat($chatId: Int!) {
-  chats_by_pk(id: $chatId){
-    messages {
-      content
-    }
-  }
-}
-`;
+import "../scss/message.scss";
+import { useChatState } from "../context/chatContext";
+import Loader from './loader';
 
 interface ChatProps {
-  chatId: number;
+  chatId: string;
 }
 
-export default function Chat({ chatId }: ChatProps) {
-  const { loading, error, data } = useQuery(CHAT_QUERY, {
-    variables: { chatId },
-  });
-  if (loading)
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-  if (error) return <div>"Darn!"</div>;
-  return <div>{JSON.stringify(data)}</div>;
+interface Sender {
+  displayname: string;
 }
+
+interface Message {
+  content: string;
+  sender: Sender;
+}
+interface Chat {
+  id: string;
+  messages?: Message[];
+}
+
+function renderMessage(message: Message) {
+  return (
+    <div className="message">
+      <div className="message-content">{message.content}</div>
+      <div className="message-sender">{message.sender.displayname}</div>
+    </div>
+  );
+}
+
+function renderMessages(messages: Message[]) {
+  return messages.map(message => renderMessage(message));
+}
+
+function Chat({ chatId }: ChatProps) {
+  const getChatById = useChatState();
+  const { messages }: Chat = getChatById(chatId);
+  if (!messages){
+    return <Loader />
+  }
+  // Reverses so that we're able to use limits
+  return <div>{renderMessages(messages.reverse())}</div>;
+}
+
+export default Chat;

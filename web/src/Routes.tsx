@@ -7,7 +7,8 @@ import ChatListPage from "./pages/loggedIn/ChatListPage";
 import ChatPage from "./pages/loggedIn/ChatPage";
 import { AuthContext } from "./context/authContext";
 import { useContext } from "preact/compat";
-import { SubscriptionClient } from "subscriptions-transport-ws";
+import { ChatProvider } from "./context/chatContext";
+import { CustomSubscriptionClient } from "./utils/custom-subscription";
 
 import { GraphQLClient, ClientContext } from "graphql-hooks";
 
@@ -43,10 +44,10 @@ function RedirectHome() {
 
 export default function Routes() {
   const { auth } = useContext(AuthContext);
-  console.log('create a client')
+  console.log("create a client");
   const client = new GraphQLClient({
     url: "https://jayy-lmao-another-chat-app.herokuapp.com/v1/graphql",
-    subscriptionClient: new SubscriptionClient(
+    subscriptionClient: new CustomSubscriptionClient(
       "ws://jayy-lmao-another-chat-app.herokuapp.com/v1/graphql",
       {
         reconnect: true,
@@ -62,17 +63,20 @@ export default function Routes() {
   client.setHeader("Authorization", `Bearer ${auth.token}`);
   return auth.isLoggedIn ? (
     <ClientContext.Provider value={client}>
-      <Switch>
-        <Route path="/" component={IsLoggedIn} />
-        <Route path="/another" component={IsLoggedIn} />
-        <Route path="/login" component={RedirectHome} />
-        <Route path="/signup" component={RedirectHome} />
-        <Route path="/friends" component={FriendsPage} />
-        <Route path="/chats" component={ChatListPage} />
-        <Route path="/chats/:chatId">
-          {(params) => <ChatPage chatId={params.chatId} />}
-        </Route>
-      </Switch>
+      <ChatProvider>
+        <Switch>
+          <Route path="/" component={IsLoggedIn} />
+          <Route path="/another" component={IsLoggedIn} />
+          <Route path="/login" component={RedirectHome} />
+          <Route path="/signup" component={RedirectHome} />
+          <Route path="/friends" component={FriendsPage} />
+          <Route path="/chats" component={ChatListPage} />
+          <Route path="/chats/:chatId">
+            {(params) => <ChatPage chatId={params.chatId} />}
+          </Route>
+        </Switch>
+      </ChatProvider>
+      >
     </ClientContext.Provider>
   ) : (
     <Switch>
