@@ -1,7 +1,11 @@
 import { h } from "preact";
+import {useContext} from "preact/hooks"
 import "../scss/message.scss";
 import { useChatState } from "../context/chatContext";
-import Loader from './loader';
+import Loader from "./loader";
+import Messages from "./Messages";
+import MessageBox from "./MessageBox";
+import { AuthContext } from "../context/authContext"
 
 interface ChatProps {
   chatId: string;
@@ -9,6 +13,7 @@ interface ChatProps {
 
 interface Sender {
   displayname: string;
+  username: string;
 }
 
 interface Message {
@@ -20,27 +25,20 @@ interface Chat {
   messages?: Message[];
 }
 
-function renderMessage(message: Message) {
-  return (
-    <div className="message">
-      <div className="message-content">{message.content}</div>
-      <div className="message-sender">{message.sender.displayname}</div>
-    </div>
-  );
-}
-
-function renderMessages(messages: Message[]) {
-  return messages.map(message => renderMessage(message));
-}
-
 function Chat({ chatId }: ChatProps) {
+  const { auth } = useContext(AuthContext);
   const getChatById = useChatState();
   const { messages }: Chat = getChatById(chatId);
-  if (!messages){
-    return <Loader />
+  if (!messages) {
+    return <Loader />;
   }
   // Reverses so that we're able to use limits
-  return <div>{renderMessages(messages.reverse())}</div>;
+  return (
+    <div className="chatbox">
+      <Messages messages={messages.reverse()} username={auth.username}/>
+      <MessageBox chatId={chatId} />
+    </div>
+  );
 }
 
 export default Chat;

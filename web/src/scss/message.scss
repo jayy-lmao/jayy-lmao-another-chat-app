@@ -1,10 +1,16 @@
+.message-row {
+  display: flex;
+}
 .message {
   margin: 4px;
   padding: 8px;
   border-width: 10px;
-  width: 300px;
-  display: block;
   background-color: lightgrey;
+  width: 70%;
+}
+.message-row--self {
+  @extend .message-row;
+  justify-content: flex-end;
 }
 
 .message-sender {
@@ -13,5 +19,16 @@
 }
 
 .chatbox {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  width: 30em;
+}
+
+.messagebox {
+  width: 100%;
+  display: flex;
+  input {
+    flex-grow: 1;
+  }
 }

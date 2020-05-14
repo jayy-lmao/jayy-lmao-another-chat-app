@@ -10,8 +10,6 @@ export default function ChatPage({ chatId }: ChatProps) {
   return (
     <div className="page--empty">
       <Chat chatId={chatId} />
-      <br />
-      <MessageBox chatId={chatId} />
     </div>
   );
 }

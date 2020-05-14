@@ -42,7 +42,7 @@ function MessageBox({ chatId }: MessageBoxProps) {
     setMessage("");
   };
   return (
-    <div className="chatbox">
+    <div className="messagebox">
       <input value={message} onChange={handleChange} />
         <button type="submit" onClick={handleClick}>Send</button>
     </div>
